@@ -112,6 +112,18 @@ export class Service{
             return false
         }
     }
+
+    async getFilePreview(fileId){
+        try {
+            return await this.storage.getFilePreview({
+                bucketId: conf.appwriteBucketId,
+                fileId: fileId,
+            })
+        } catch (error) {
+            console.log("Appwrite service :: getFilePreview() :: ", error);
+            return false
+        }
+    }
 }
 
 const configService = new Service();
