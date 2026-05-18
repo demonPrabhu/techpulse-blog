@@ -14,6 +14,8 @@ import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
 import store from './store/store.js'
 import Post from './pages/Post.jsx'
+import NotFound from './pages/NotFound.jsx'
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -50,7 +52,11 @@ const router = createBrowserRouter(
         </Protected>
       } />
 
+      {/* Catch-all route for any undefined paths */}
+      <Route path='*' element={<NotFound />} />
+
     </Route>
+
   )
 )
 

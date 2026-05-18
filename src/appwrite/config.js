@@ -1,5 +1,5 @@
 import conf from "../conf/conf";
-import { Client, TablesDB, Storage, Permission, Role, Query } from "appwrite";
+import { Client, ID, TablesDB, Storage, Permission, Role, Query } from "appwrite";
 
 export class Service{
     client= new Client();
@@ -19,7 +19,7 @@ export class Service{
         try {
             return await this.tablesDB.getRow({
                 databaseId: conf.appwriteDatabaseId,
-                tableId: conf.tableId,
+                tableId: conf.appwriteTableId,    //conf.tableId,
                 rowId: slug // review later, related to userId which is ID.unique()
             })
         } catch (error) {
@@ -55,7 +55,7 @@ export class Service{
         }
     }
 
-    async updatePost({title, slug, content, featuredImage, status}){
+    async updatePost(slug, {title, content, featuredImage, status}){
         try {
             return await this.tablesDB.updateRow({
                databaseId: conf.appwriteDatabaseId,
@@ -113,9 +113,43 @@ export class Service{
         }
     }
 
+// async getFileView(fileId){
+//         try {
+//             console.log("Try Appwrite service :: getFileView() :: ", fileId)
+//             //  return await this.storage.getFilePreview(
+//             //     conf.appwriteBucketId,
+//             //     fileId,
+//             // )
+//             console.log(await this.storage.getFileView({
+//                 bucketId: conf.appwriteBucketId,
+//                 fileId: fileId,
+//             }));
+            
+//             return await this.storage.getFileView({
+//                 bucketId: conf.appwriteBucketId,
+//                 fileId: fileId,
+//             })
+//         } catch (error) {
+//             console.log("Catch Appwrite service :: getFileView() :: ", error);
+//             return false
+//         }
+//     }
+   
+
+    
     async getFilePreview(fileId){
         try {
-            return await this.storage.getFilePreview({
+            console.log("Appwrite service :: getFilePreview() :: ", fileId)
+            //  return await this.storage.getFilePreview(
+            //     conf.appwriteBucketId,
+            //     fileId,
+            // )
+            console.log(await this.storage.getFileView({
+                bucketId: conf.appwriteBucketId,
+                fileId: fileId,
+            }));
+            
+            return await this.storage.getFileView({
                 bucketId: conf.appwriteBucketId,
                 fileId: fileId,
             })
@@ -137,16 +171,16 @@ export default configService;
 
 
 
-const client = new Client()
-    .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
-    .setProject('<YOUR_PROJECT_ID>'); // Your project ID
+// const client = new Client()
+//     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
+//     .setProject('<YOUR_PROJECT_ID>'); // Your project ID
 
-const tablesDB = new TablesDB(client);
+// const tablesDB = new TablesDB(client);
 
-const result = await tablesDB.getRow({
-    databaseId: '<DATABASE_ID>',
-    tableId: '<TABLE_ID>',
-    rowId: '<ROW_ID>',
-    queries: [], // optional
-    transactionId: '<TRANSACTION_ID>' // optional
-});
+// const result = await tablesDB.getRow({
+//     databaseId: conf.appwriteDatabaseId, //'<DATABASE_ID>',
+//     tableId: conf.appwriteTableId, //'<TABLE_ID>',
+//     rowId: ,  //'<ROW_ID>',
+//     queries: [], // optional
+//     transactionId:conf.  //'<TRANSACTION_ID>' // optional
+// });

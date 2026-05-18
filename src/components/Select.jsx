@@ -17,12 +17,12 @@ export default function Select({
             {label}
         </label>
         }
-        <select className={` ${className}`} id={id} {...props}>
+        <select className={` ${className}`} id={id} ref={ref} {...props}>
             {options?.map((option)=>(   // ? to check array has elements
                 <option
                 key={option}
                 value={option}
-                ref={ref}
+               // ref={ref}  not be used inside map in option, should be passed in Select directly
                 >
                     {option}
                 </option>

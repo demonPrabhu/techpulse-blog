@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { authService } from '../appwrite/auth'
-import { login as storeLogin } from './features/authSlice.js'
+import  authService  from '../appwrite/auth'
+import { login as storeLogin } from '../features/authSlice.js'
 import { Logo, Input, Button } from './index';
 
 export default function SignUp() {
@@ -11,7 +11,7 @@ export default function SignUp() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
-    const { error, setError } = useState()
+    const [ error, setError ] = useState()
 
     const createAccount = async (data) => {
         try {
@@ -27,7 +27,7 @@ export default function SignUp() {
         } catch (error) {
             setError(error.message)
         }
-
+        console.log(data)
     }
   return (
     <div>
