@@ -29,20 +29,26 @@ function AllPosts() {
     
   
   return (
-    <div>
-      
-      <Container >
-      {
-      posts.map((post)=>
-       <div key={post.$id}>
-        <PostCard 
-         {...post}
-        />
-       </div>            
-      )}
-      </Container>
-      
+    <div className="bg-slate-50 py-10">
+      <Container>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">All Posts</h1>
+        </div>
 
+        {posts.length === 0 ? (
+          <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-slate-600">
+            No posts available yet.
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {posts.map((post) => (
+              <div key={post.$id} className="h-full">
+                <PostCard {...post} />
+              </div>
+            ))}
+          </div>
+        )}
+      </Container>
     </div>
   )
 }

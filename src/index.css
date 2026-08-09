@@ -1,1 +1,48 @@
 @import "tailwindcss";
+
+.post-content {
+  color: theme('colors.slate.700');
+  line-height: 1.75;
+}
+
+.post-content > * + * {
+  margin-top: 1em;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+  font-weight: 700;
+  color: theme('colors.slate.900');
+  margin-top: 1.5em;
+}
+
+.post-content a {
+  color: theme('colors.sky.600');
+  text-decoration: underline;
+}
+
+.post-content img {
+  border-radius: 0.75rem;
+  max-width: 100%;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: 1.5em;
+}
+
+.post-content ul {
+  list-style: disc;
+}
+
+.post-content ol {
+  list-style: decimal;
+}
+
+.post-content blockquote {
+  border-left: 4px solid theme('colors.sky.200');
+  padding-left: 1em;
+  color: theme('colors.slate.500');
+  font-style: italic;
+}
