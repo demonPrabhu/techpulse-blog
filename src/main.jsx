@@ -7,7 +7,7 @@ import App from './App.jsx'
 import Protected from './components/AuthLayout.jsx'
 
 import AddPost from './pages/AddPost.jsx'
-import AllPosts from './pages/AllPosts.jsx'
+import MyPosts from './pages/MyPosts.jsx'
 import EditPost from './pages/EditPost.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
@@ -38,9 +38,9 @@ const router = createBrowserRouter(
           <AddPost />
         </Protected>
       } />
-      <Route path='/all-posts' element={
+      <Route path='/my-posts' element={
         <Protected authentication>
-          <AllPosts />
+          <MyPosts />
         </Protected>
       } />
       <Route path='/edit-post/:slug' element={

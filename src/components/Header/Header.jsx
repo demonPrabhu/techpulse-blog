@@ -16,7 +16,7 @@ export default function Header() {
         { name: 'Sign Up', slug: '/signup', active: !authStatus },
         { name: 'Add Post', slug: '/add-post', active: authStatus },
         { name: 'Edit Post', slug: '/edit-post', active: authStatus },
-        { name: 'All Posts', slug: '/all-posts', active: authStatus },
+        { name: 'My Posts', slug: '/my-posts', active: authStatus },
     ]
 
     // Shared active/inactive styling for both desktop and mobile links

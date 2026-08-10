@@ -70,7 +70,7 @@ function Post() {
         if (post.featuredImage) {
           appwriteService.deleteFile(post.featuredImage)
         }
-        navigate('/all-posts')
+        navigate('/my-posts')
       } else {
         setDeleting(false)
       }
@@ -97,10 +97,10 @@ function Post() {
             The post you're looking for doesn't exist or was removed.
           </p>
           <Link
-            to="/all-posts"
+            to="/my-posts"
             className="mt-5 inline-flex items-center gap-1 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-sky-700"
           >
-            ← Back to all posts
+            ← Back to my posts
           </Link>
         </div>
       </div>
