@@ -172,6 +172,7 @@ function Post() {
               Blog Post
             </span>
             <h1 className="text-3xl font-bold leading-tight text-slate-900">{post.title}</h1>
+            <p className="mt-1 text-sm text-slate-500">By {post.userName || 'Anonymous'}</p>
 
             <div className="post-content mt-6">
               {parse(post.content)}

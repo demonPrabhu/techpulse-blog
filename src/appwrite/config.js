@@ -48,13 +48,13 @@ export class Service{
         }
     }
     
-    async createPost({title, slug, content, featuredImage, status, userId}){
+    async createPost({title, slug, content, featuredImage, status, userId, userName}){
         try {
             return await this.tablesDB.createRow({
                 databaseId: conf.appwriteDatabaseId,
                 tableId: conf.appwriteTableId,
                 rowId: slug,
-                data: {title, content, featuredImage, status, userId}
+                data: {title, content, featuredImage, status, userId, userName}
             })
         } catch (error) {
             console.log("Appwrite service :: createPost() :: ", error);

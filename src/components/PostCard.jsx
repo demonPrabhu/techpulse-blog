@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import configService from '../appwrite/config'
 
 /** Post preview card for grid listings (Home, All Posts); links through to the full post. */
-export default function PostCard({ $id, title, featuredImage }) {
+export default function PostCard({ $id, title, featuredImage, userName }) {
     const [imageUrl, setImageUrl] = useState("")
 
     // featuredImage is a file ID, not a URL — resolve it to a viewable URL before rendering.
@@ -41,6 +41,7 @@ export default function PostCard({ $id, title, featuredImage }) {
                     <h2 className="line-clamp-2 text-xl font-bold text-slate-900 transition-colors group-hover:text-sky-700">
                         {title}
                     </h2>
+                    <p className="mt-1 text-sm text-slate-500">By {userName || 'Anonymous'}</p>
                     <div className="mt-4 flex items-center justify-between pt-3 text-sm text-slate-500">
                         <span>Read article</span>
                         <span aria-hidden="true">→</span>

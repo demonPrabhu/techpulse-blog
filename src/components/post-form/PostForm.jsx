@@ -50,7 +50,8 @@ export default function PostForm({post}) {
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({
                     ...data,
-                    userId: userData.$id
+                    userId: userData.$id,
+                    userName: userData.name
                 })
                 if(dbPost)
                 navigate(`/post/${dbPost.$id}`)
