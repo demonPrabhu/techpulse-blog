@@ -44,7 +44,7 @@ npm install
 
 Create a `.env` file with your Appwrite project credentials:
 ```
-VITE_APPWRITE_URL=https://fra.cloud.appwrite.io/v1
+VITE_APPWRITE_URL=your_appwrite_endpoint
 VITE_APPWRITE_PROJECT_ID=your_project_id
 VITE_APPWRITE_DATABASE_ID=your_database_id
 VITE_APPWRITE_TABLE_ID=your_table_id
