@@ -5,6 +5,7 @@ import { Button, Container } from '../components/index'
 import parse from 'html-react-parser'
 import { useSelector } from 'react-redux'
 
+/** Single post view: fetches by slug, renders the parsed HTML content, and (for the author) offers edit/delete. */
 function Post() {
 
   const [post, setPost] = React.useState(null)
@@ -183,9 +184,3 @@ function Post() {
 }
 
 export default Post
-
-// Dispay one post
-// Take slug from url, getpost
-// content as parse
-// Edit or delete or for user
-//title, slug, content, featuredImage, status, userId

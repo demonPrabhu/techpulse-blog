@@ -1,5 +1,6 @@
 import React, { useId } from 'react'
 
+/** Labeled text input; generates its own id/label pairing via useId. */
 export default function Input({
     type='text',
     label,

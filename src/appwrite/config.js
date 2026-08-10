@@ -1,6 +1,11 @@
 import conf from "../conf/conf";
 import { Client, ID, TablesDB, Storage, Permission, Role, Query } from "appwrite";
 
+/**
+ * Wraps Appwrite's TablesDB (posts) and Storage (featured images) APIs.
+ * Every method returns `false` on failure instead of throwing, so callers
+ * can just check truthiness rather than wrapping every call in try/catch.
+ */
 export class Service{
     client= new Client();
     tablesDB;
@@ -15,12 +20,13 @@ export class Service{
     }
 
 
+    // Posts use their slug as the Appwrite row ID, so lookups are by slug, not a separate numeric ID.
     async getPost(slug){
         try {
             return await this.tablesDB.getRow({
                 databaseId: conf.appwriteDatabaseId,
-                tableId: conf.appwriteTableId,    //conf.tableId,
-                rowId: slug // review later, related to userId which is ID.unique()
+                tableId: conf.appwriteTableId,
+                rowId: slug
             })
         } catch (error) {
            console.log("Appwrite service :: getPost() :: ", error);
@@ -28,7 +34,8 @@ export class Service{
         }
     }
 
-    async getPosts(queries = [Query.equal('status','active')]){ // Default parameter used here
+    // Defaults to only 'active' posts (e.g. for public listings); pass [] to include drafts too.
+    async getPosts(queries = [Query.equal('status','active')]){
         try {
             return await this.tablesDB.listRows({
                 databaseId: conf.appwriteDatabaseId,
@@ -86,7 +93,7 @@ export class Service{
     }
 
 
-    // Storage Services
+    // --- Storage: featured images for posts ---
 
     async uploadFile(file){
         try {
@@ -113,42 +120,9 @@ export class Service{
         }
     }
 
-// async getFileView(fileId){
-//         try {
-//             console.log("Try Appwrite service :: getFileView() :: ", fileId)
-//             //  return await this.storage.getFilePreview(
-//             //     conf.appwriteBucketId,
-//             //     fileId,
-//             // )
-//             console.log(await this.storage.getFileView({
-//                 bucketId: conf.appwriteBucketId,
-//                 fileId: fileId,
-//             }));
-            
-//             return await this.storage.getFileView({
-//                 bucketId: conf.appwriteBucketId,
-//                 fileId: fileId,
-//             })
-//         } catch (error) {
-//             console.log("Catch Appwrite service :: getFileView() :: ", error);
-//             return false
-//         }
-//     }
-   
-
-    
+    // Returns a viewable URL for a stored image (used as post.featuredImage).
     async getFilePreview(fileId){
         try {
-            console.log("Appwrite service :: getFilePreview() :: ", fileId)
-            //  return await this.storage.getFilePreview(
-            //     conf.appwriteBucketId,
-            //     fileId,
-            // )
-            console.log(await this.storage.getFileView({
-                bucketId: conf.appwriteBucketId,
-                fileId: fileId,
-            }));
-            
             return await this.storage.getFileView({
                 bucketId: conf.appwriteBucketId,
                 fileId: fileId,
@@ -163,24 +137,3 @@ export class Service{
 const configService = new Service();
 
 export default configService;
-
-
-
-
-
-
-
-
-// const client = new Client()
-//     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
-//     .setProject('<YOUR_PROJECT_ID>'); // Your project ID
-
-// const tablesDB = new TablesDB(client);
-
-// const result = await tablesDB.getRow({
-//     databaseId: conf.appwriteDatabaseId, //'<DATABASE_ID>',
-//     tableId: conf.appwriteTableId, //'<TABLE_ID>',
-//     rowId: ,  //'<ROW_ID>',
-//     queries: [], // optional
-//     transactionId:conf.  //'<TRANSACTION_ID>' // optional
-// });

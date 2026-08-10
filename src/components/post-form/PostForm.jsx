@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux'
 import appwriteService from '../../appwrite/config.js'
 import { useNavigate } from 'react-router'
 
+/**
+ * Create/edit form for a blog post. Reused for both flows: passing a `post`
+ * switches it into edit mode (pre-filled fields, update instead of create).
+ */
 export default function PostForm({post}) {
-
-    console.log('PostFormComp')
 
     const { register, handleSubmit, control, watch, setValue, getValues } = useForm({
         defaultValues: {
@@ -21,6 +23,9 @@ export default function PostForm({post}) {
     const navigate = useNavigate()
     const userData = useSelector( (state)=> state.auth.userData)
 
+    // Edit mode updates the existing row; only re-uploads the image if a new
+    // file was chosen, and deletes the old one from storage to avoid orphans.
+    // Create mode always uploads an image (required) and creates a new row.
     const submit = async (data) => {
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
@@ -28,15 +33,15 @@ export default function PostForm({post}) {
             if(file)
                 appwriteService.deleteFile(post.featuredImage)
 
-            const dbPost = await appwriteService.updatePost(    // Review Later
+            const dbPost = await appwriteService.updatePost(
                 post.$id, {
                     ...data,
                     featuredImage: file ? file.$id : undefined
-                } 
+                }
             )
 
             if(dbPost)
-                navigate(`/post/${dbPost.$id}`)  // Review Later, ${dbPost.$id} in code
+                navigate(`/post/${dbPost.$id}`)
         } else {
             const file = await appwriteService.uploadFile(data.image[0])
 
@@ -44,15 +49,17 @@ export default function PostForm({post}) {
                 const fileId = file.$id
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({
-                    ...data, 
+                    ...data,
                     userId: userData.$id
                 })
                 if(dbPost)
-                navigate(`/post/${dbPost.$id}`)  // Review Later, ${dbPost.$id} in code
-            }        
+                navigate(`/post/${dbPost.$id}`)
+            }
     }
 }
 
+    // Turns a title into a URL-safe slug: lowercase, non-alphanumeric chars
+    // become hyphens, whitespace becomes hyphens.
     const slugTransform = useCallback((value)=>{
         if( value && typeof(value) =='string' )
     return value
@@ -60,18 +67,20 @@ export default function PostForm({post}) {
             .toLocaleLowerCase()
             .replace(/[^a-zA-Z\d\s]+/g, '-')
             .replace(/\s/g, '-')
-    
+
     return ''
     },[])
 
+    // Auto-generate the slug from the title as the user types, unless
+    // they've started editing the slug field directly (see onInput below).
     React.useEffect( () => {
         const subscription = watch( (value, { name })=> {
             if( name == 'title')
-                setValue('slug', slugTransform(value.title), { shouldValidate: true} )         
+                setValue('slug', slugTransform(value.title), { shouldValidate: true} )
         })
         return ()=> subscription.unsubscribe()
-    },[watch, setValue, slugTransform] )    
-    
+    },[watch, setValue, slugTransform] )
+
 return (
         // Added a crisp card wrapper container with background depth
         <div className="w-full p-6 md:p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
@@ -156,79 +165,3 @@ return (
         </div>
     )
 }
-
-
-
-//   return (
-//     <div>
-//         <form onSubmit={handleSubmit(submit)}
-//         className="flex flex-wrap"
-//         >
-// {/* title, slug, content, featuredImage, status, userId             */}
-
-//         <div
-//         className="w-2/3 px-2"
-//         >
-//             <Input
-//             label='Title' 
-//             placeholder='Title'
-//             {...register('title', {required: true}) }
-//             className="mb-4"
-//             />
-
-//             <Input 
-//             label='Slug'
-//             placeholder='Slug'
-//             {...register( 'slug', {required: true} )}
-//             onInput= {( (e)=> setValue( 'slug', slugTransform(e.currentTarget.value), { shouldValidate: true}) )}
-//             className="mb-4"
-//             />
-            
-//             <RTE
-//               label= 'Content :'
-//               name='content'  
-//               control= {control}
-//               defaultValue= { getValues('content') }
-//             />
-//         </div>
-
-
-//         <div
-//         className="1/3 px-2">
-//             <Input 
-//             label= ' Featured Image : '
-//             type='file'
-//             accept= ' image/png, image/jpg, image/jpeg, image/gif'
-//             {...register( 'image', { required: !post })}
-//             className="mb-4"
-//             /> 
-
-
-//             { post && 
-//                 (<div className="w-full mb-4">
-//                 <img 
-//                     src= { appwriteService.getFilePreview(post.featuredImage) }
-//                     alt= { post.title}
-//                     className="rounded-lg"
-//                 />
-//                 </div>
-//             )}
-
-//             <Select 
-//                 label= 'Status :'
-//                 options= { ['active' , 'inactive'] }
-//                 {...register('status', {required: true})}
-//                 className="mb-4"
-//             />
-
-//             <Button 
-//                 type='submit'
-//                 className="w-full"
-//             >
-//                 { post? 'Update' : 'Submit' }
-//             </Button>
-//         </div>
-//         </form>
-//     </div>
-//   )
-// }

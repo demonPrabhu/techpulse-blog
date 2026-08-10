@@ -1,5 +1,6 @@
 import React, { useId } from 'react'
 
+/** Labeled select dropdown; options passed as a plain string array. */
 export default function Select({
     options,
     label,

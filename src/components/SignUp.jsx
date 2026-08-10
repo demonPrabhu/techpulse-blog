@@ -6,6 +6,7 @@ import  authService  from '../appwrite/auth'
 import { login as storeLogin } from '../features/authSlice.js'
 import { Logo, Input, Button } from './index';
 
+/** Sign-up form: creates an Appwrite account, logs in, stores the user in Redux, then redirects home. */
 export default function SignUp() {
 
     const navigate = useNavigate()

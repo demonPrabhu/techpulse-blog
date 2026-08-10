@@ -3,6 +3,7 @@ import { Editor } from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
 import conf from '../conf/conf'
 
+/** TinyMCE rich text editor wired into react-hook-form via Controller. */
 export default function RTE({ // Mistake: Forgot to take Props as object, remember, more than 1 prop, mostly are objects
     name,
     control,

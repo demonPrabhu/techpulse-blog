@@ -3,12 +3,14 @@ import { useDispatch } from 'react-redux'
 import { logout } from '../../features/authSlice'
 import authService from '../../appwrite/auth'
 
+/** Ends the Appwrite session and clears the logged-in user from Redux. */
 export default function LogOutBtn() {
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
+        // Only clear Redux auth state once the Appwrite session is actually gone.
         authService.logout().then(()=>
-        {// This ONLY runs if logout() succeeded
+        {
             dispatch(logout())
         })
     }

@@ -3,6 +3,7 @@ import { Container, PostCard } from '../components/index'
 import { useSelector } from 'react-redux'
 import appwriteService from '../appwrite/config'
 
+/** Landing page: shows the active-post feed to logged-in users, or a login prompt otherwise. */
 function Home() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(false)
@@ -11,6 +12,7 @@ function Home() {
   const loginStatus = useSelector((state) => state.auth.status)
 
   useEffect(() => {
+    // No point fetching posts for a logged-out visitor; the guest view below handles that case.
     if (!loginStatus) {
       setPosts([])
       setError(null)

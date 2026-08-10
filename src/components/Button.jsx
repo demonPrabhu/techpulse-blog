@@ -1,5 +1,6 @@
 import React from 'react'
 
+/** Shared button styled via bgColor/textColor props; forwards any other props (onClick, disabled, etc). */
 export default function Button({
     children,
     type= 'button',

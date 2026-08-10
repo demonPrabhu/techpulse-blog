@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlice from '../features/authSlice.js'
 
+/** Redux store; currently holds just the auth slice. */
 const store = configureStore({
     reducer: {
         auth: authSlice
@@ -8,7 +9,3 @@ const store = configureStore({
 })
 
 export default store
-
-// 11blogapp\src\featues\authSlice.js
-
-// 11blogapp\src\store\store.js

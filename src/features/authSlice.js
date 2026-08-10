@@ -5,6 +5,7 @@ const initialState = {
     userData: null
 }
 
+/** Tracks the logged-in user across the app; synced from Appwrite session state in App.jsx. */
 const authSlice = createSlice({
     name: "auth",
     initialState,

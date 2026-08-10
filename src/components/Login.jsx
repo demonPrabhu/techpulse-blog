@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { Logo, Input, Button } from './index';
 
+/** Login form: authenticates via Appwrite, stores the user in Redux, then redirects home. */
 export default function Login() {
 
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function Login() {
                     dispatch(storeLogin({userData}))
                     navigate('/')
                 }
-            } 
+            }
         } catch (error) {
             setError(error.message)
         }
@@ -108,59 +109,4 @@ export default function Login() {
             </div>
         </div>
     )
-
-
-
-//   return (
-//     <div>
-//         <div>
-//             <span>
-//                 <Logo />
-//             </span>
-//         </div>
-
-//         <h2>
-//             Sign in to your Account
-//         </h2>
-
-//         <p>
-//             Don't have an Account
-//             <Link to='/signup'>
-//                 Sign Up
-//             </Link>
-//         </p>
-//         {error && <p> {error} </p>}
-
-//         <form onSubmit={handleSubmit(login)}>
-//             <Input 
-//             label='EMAIL'
-//             placeholder='Enter your EMAIL'
-//             type='email'
-//             {...register("email",
-//                 {required: true,
-//                  validate: {  // Review Later, syntax seems to be different is site
-//                         matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-//                         "Email address must be a valid address",       
-//                 }}
-//             )}
-//             />
-
-//             <Input 
-//             label='password'
-//             placeholder='Enter your password'
-//             type='password'
-//             {...register("password", {
-//                 required: true
-//             })}
-//             />
-
-//             <Button
-//             type='submit'
-//             >
-//                 Sign in
-//             </Button>
-//         </form>
-
-//     </div>
-//   )
 }

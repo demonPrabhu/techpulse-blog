@@ -17,6 +17,8 @@ import Post from './pages/Post.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 
+// Login/Sign Up are wrapped with authentication={false} (guest-only);
+// post routes are wrapped with authentication={true} (must be logged in).
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>

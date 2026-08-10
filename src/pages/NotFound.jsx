@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+/** Catch-all 404 page for unmatched routes. */
 export default function NotFound() {
 
     return(

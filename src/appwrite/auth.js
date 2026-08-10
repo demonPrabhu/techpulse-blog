@@ -1,14 +1,15 @@
 import { Client, Account, ID } from "appwrite";
 import conf from "../conf/conf";
 
+/** Wraps Appwrite's Account API for signup/login/logout/session lookup. */
 export class AuthService{
     client = new Client();
     account;
 
     constructor(){
         this.client
-            .setEndpoint(conf.appwriteUrl) // Your API Endpoint(URL)
-            .setProject(conf.appwriteProjectId); // Your project ID
+            .setEndpoint(conf.appwriteUrl)
+            .setProject(conf.appwriteProjectId);
         this.account = new Account(this.client);
     }
 
@@ -21,7 +22,7 @@ export class AuthService{
                         name: name
     });
         if(userAccount){
-            // calls another method 
+            // Account creation doesn't start a session, so log in immediately after.
             return this.login(email,password)
         }
         else {
@@ -40,7 +41,7 @@ export class AuthService{
                             password: password
     });
         return result;
-    } 
+    }
         catch (error) {
             throw error
         }
@@ -57,7 +58,7 @@ export class AuthService{
 
     async logout(){
         try {
-            await this.account.deleteSession({ sessionId: 'current'}); // simple logout, review doc later
+            await this.account.deleteSession({ sessionId: 'current'});
         } catch (error) {
             console.log("Appwrite service :: logout() :: ", error);
         }

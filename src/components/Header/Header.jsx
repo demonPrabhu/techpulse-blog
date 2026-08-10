@@ -3,10 +3,12 @@ import {Link, useNavigate } from 'react-router'
 import {useSelector} from 'react-redux'
 import {Logo, Button, Container, LogoutBtn} from '../index' 
 
+/** Site nav bar; shows Login/Sign Up when logged out or Add/Edit/All Posts + Logout when logged in. */
 export default function Header() {
 
     const authStatus = useSelector((state)=> state.auth.status )
     const navigate = useNavigate()
+    // Each item's `active` flag decides whether it's shown for the current auth state.
     const items = [
         {
             name: 'Home',
