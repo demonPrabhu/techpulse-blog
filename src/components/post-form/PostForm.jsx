@@ -14,7 +14,9 @@ export default function PostForm({post}) {
     const { register, handleSubmit, control, watch, setValue, getValues, formState: { errors } } = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            // slug is stored as the row's $id (Appwrite doesn't echo it back as a
+            // regular data field — see createPost's rowId: slug), not post.slug.
+            slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active',
         }
