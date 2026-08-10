@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router'
 import { useSelector } from 'react-redux'
 import { Logo, Container, LogoutBtn } from '../index'
 
-/** Site nav bar; shows Login/Sign Up when logged out or Add/Edit/All Posts + Logout when logged in. */
+/** Site nav bar; shows Login/Sign Up when logged out or Add Post/My Posts + Logout when logged in. */
 export default function Header() {
 
     const authStatus = useSelector((state) => state.auth.status)
@@ -15,7 +15,6 @@ export default function Header() {
         { name: 'Login', slug: '/login', active: !authStatus },
         { name: 'Sign Up', slug: '/signup', active: !authStatus },
         { name: 'Add Post', slug: '/add-post', active: authStatus },
-        { name: 'Edit Post', slug: '/edit-post', active: authStatus },
         { name: 'My Posts', slug: '/my-posts', active: authStatus },
     ]
 
