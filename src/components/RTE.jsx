@@ -3,25 +3,32 @@ import { Editor } from '@tinymce/tinymce-react'
 import { Controller } from 'react-hook-form'
 import conf from '../conf/conf'
 
-/** TinyMCE rich text editor wired into react-hook-form via Controller. */
+/**
+ * TinyMCE rich text editor wired into react-hook-form via Controller.
+ * Accepts an optional `rules` object (react-hook-form validation rules)
+ * and renders the resulting error message below the editor.
+ */
 export default function RTE({ // Mistake: Forgot to take Props as object, remember, more than 1 prop, mostly are objects
     name,
     control,
     label,
-    defaultValue = ''
+    defaultValue = '',
+    rules
 }) {
   return (
     <div>
 
         {label && <label>
-            { label} 
+            { label}
             </label>
             }
 
         <Controller
          name={name}
-         control={control}   
-        render={({field: {onChange}}) => (
+         control={control}
+         rules={rules}
+        render={({field: {onChange}, fieldState: {error}}) => (
+        <>
         <Editor
         apiKey={conf.tinyMceApiKey}
         initialValue={defaultValue}
@@ -57,6 +64,10 @@ export default function RTE({ // Mistake: Forgot to take Props as object, rememb
         }}
         onEditorChange={onChange}
         />
+        {error && (
+            <p className="mt-1 text-xs text-red-600 font-medium">{error.message}</p>
+        )}
+        </>
     )}
     />
 

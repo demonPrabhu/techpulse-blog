@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router'
  */
 export default function PostForm({post}) {
 
-    const { register, handleSubmit, control, watch, setValue, getValues } = useForm({
+    const { register, handleSubmit, control, watch, setValue, getValues, formState: { errors } } = useForm({
         defaultValues: {
             title: post?.title || '',
             slug: post?.slug || '',
@@ -88,28 +88,45 @@ return (
                 
                 {/* Left Side: Dynamic Core inputs (Title, Slug, Text Area Editor) */}
                 <div className="w-full lg:w-2/3 px-4 flex flex-col gap-5">
-                    <Input
-                        label='Title' 
-                        placeholder='Enter a catchy title...'
-                        {...register('title', {required: true}) }
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
-                    />
+                    <div>
+                        <Input
+                            label='Title'
+                            placeholder='Enter a catchy title...'
+                            {...register('title', {required: 'Title is required'}) }
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                        />
+                        {errors.title && (
+                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.title.message}</p>
+                        )}
+                    </div>
 
-                    <Input 
-                        label='Slug'
-                        placeholder='url-slug-auto-generated'
-                        {...register('slug', {required: true})}
-                        onInput={(e) => setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
-                    />
+                    <div>
+                        <Input
+                            label='Slug'
+                            placeholder='url-slug-auto-generated'
+                            {...register('slug', {required: 'Slug is required'})}
+                            onInput={(e) => setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                        />
+                        {errors.slug && (
+                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.slug.message}</p>
+                        )}
+                    </div>
                     
                     {/* TinyMCE wrapper card to separate text editor visually */}
                     <div className="rounded-xl border border-gray-100 p-1 bg-gray-50/50">
                         <RTE
                           label='Content'
-                          name='content'  
+                          name='content'
                           control={control}
                           defaultValue={getValues('content')}
+                          // TinyMCE's "empty" value is HTML like "<p></p>", not "",
+                          // so a plain `required` rule wouldn't catch a blank post.
+                          rules={{
+                            validate: (value) =>
+                              (value && value.replace(/<[^>]*>/g, '').trim().length > 0) ||
+                              'Content is required'
+                          }}
                         />
                     </div>
                 </div>
@@ -119,13 +136,16 @@ return (
                     
                     {/* Media Upload Box wrapper */}
                     <div className="p-5 border border-gray-200 border-dashed rounded-2xl bg-gray-50/50 flex flex-col gap-4">
-                        <Input 
+                        <Input
                             label='Featured Image'
                             type='file'
                             accept='image/png, image/jpg, image/jpeg, image/gif'
-                            {...register('image', { required: !post })}
+                            {...register('image', { required: post ? false : 'Featured image is required' })}
                             className="file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 text-gray-500 cursor-pointer w-full"
-                        /> 
+                        />
+                        {errors.image && (
+                            <p className="text-xs text-red-600 font-medium">{errors.image.message}</p>
+                        )}
 
                         {/* Interactive Image Frame with overlay accents */}
                         {post && (
@@ -142,12 +162,15 @@ return (
 
                     {/* Status & Options Wrapper */}
                     <div className="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm flex flex-col gap-4">
-                        <Select 
+                        <Select
                             label='Post Visibility Status'
                             options={['active', 'inactive']}
-                            {...register('status', {required: true})}
+                            {...register('status', {required: 'Status is required'})}
                             className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
                         />
+                        {errors.status && (
+                            <p className="text-xs text-red-600 font-medium">{errors.status.message}</p>
+                        )}
 
                         <Button 
                             type='submit'
