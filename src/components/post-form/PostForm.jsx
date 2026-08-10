@@ -137,6 +137,7 @@ return (
                     
                     {/* Media Upload Box wrapper */}
                     <div className="p-5 border border-gray-200 border-dashed rounded-2xl bg-gray-50/50 flex flex-col gap-4">
+                        {/* Only required when creating: an edit keeps the existing image if none is chosen. */}
                         <Input
                             label='Featured Image'
                             type='file'

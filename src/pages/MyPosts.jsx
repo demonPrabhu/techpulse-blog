@@ -14,6 +14,8 @@ function MyPosts() {
     const userData = useSelector((state) => state.auth.userData)
 
     useEffect(() => {
+        // userData can briefly be null on first render (before App's session-restore
+        // effect finishes), even though the route itself is auth-protected.
         if (!userData) return
 
         // Filter by userId (not the default active-only query) so a user sees

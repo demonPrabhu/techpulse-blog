@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import configService from '../appwrite/config'
 
-/** Post preview card for grid listings (Home, All Posts); links through to the full post. */
+/** Post preview card for grid listings (Home, My Posts); links through to the full post. */
 export default function PostCard({ $id, title, featuredImage, userName, status }) {
     const [imageUrl, setImageUrl] = useState("")
 
@@ -39,6 +39,8 @@ export default function PostCard({ $id, title, featuredImage, userName, status }
                         <span className="inline-flex rounded-full bg-sky-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-sky-700">
                             Blog Post
                         </span>
+                        {/* Only 'inactive' posts get a Draft badge — Home never passes status:inactive
+                            posts here at all, but My Posts does, so this only ever shows there. */}
                         {status === 'inactive' && (
                             <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700">
                                 Draft

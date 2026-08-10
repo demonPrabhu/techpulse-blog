@@ -64,6 +64,8 @@ export default function Header() {
                         {items.map((item) =>
                             item.active && (
                                 <li key={item.name}>
+                                    {/* end is needed only for Home ("/"): every other route path is a prefix
+                                        of "/", so without `end` NavLink would treat Home as always-active. */}
                                     <NavLink to={item.slug} className={linkClass} end={item.slug === '/'}>
                                         {item.name}
                                     </NavLink>
