@@ -62,14 +62,25 @@ export default function PostForm({post}) {
 }
 
     // Turns a title into a URL-safe slug: lowercase, non-alphanumeric chars
-    // become hyphens, whitespace becomes hyphens.
+    // become hyphens, whitespace becomes hyphens. Capped at 36 chars because
+    // the slug is used as the Appwrite row ID (see createPost's rowId: slug),
+    // and Appwrite rejects row IDs longer than that.
     const slugTransform = useCallback((value)=>{
-        if( value && typeof(value) =='string' )
-    return value
+        if( value && typeof(value) =='string' ){
+    const slug = value
             .trim()
             .toLocaleLowerCase()
             .replace(/[^a-zA-Z\d\s]+/g, '-')
             .replace(/\s/g, '-')
+
+    if (slug.length <= 36) return slug
+
+    // Cut at 36 chars, then back off to the last complete hyphen-separated
+    // segment so we don't end mid-word (e.g. "-replac" from "-replaced").
+    const truncated = slug.slice(0, 36)
+    const lastHyphen = truncated.lastIndexOf('-')
+    return lastHyphen > 0 ? truncated.slice(0, lastHyphen) : truncated
+        }
 
     return ''
     },[])
