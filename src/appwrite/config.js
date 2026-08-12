@@ -58,6 +58,12 @@ export class Service{
             })
         } catch (error) {
             console.log("Appwrite service :: createPost() :: ", error);
+            // Appwrite returns 409 when rowId (our slug) already exists. Re-throw
+            // just this case so the form can show a specific "slug taken" message,
+            // instead of the generic falsy failure every other error returns.
+            if (error?.code === 409) {
+                throw error
+            }
             return false
         }
     }

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button, Input, RTE, Select } from '.././index.js'
 import { useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router'
  */
 export default function PostForm({post}) {
 
-    const { register, handleSubmit, control, watch, setValue, getValues, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, watch, setValue, getValues, formState: { errors, isSubmitting } } = useForm({
         defaultValues: {
             title: post?.title || '',
             // slug is stored as the row's $id (Appwrite doesn't echo it back as a
@@ -21,7 +21,9 @@ export default function PostForm({post}) {
             status: post?.status || 'active',
         }
     });
-    
+
+    const [submitError, setSubmitError] = useState(null)
+
     const navigate = useNavigate()
     const userData = useSelector( (state)=> state.auth.userData)
 
@@ -29,36 +31,53 @@ export default function PostForm({post}) {
     // file was chosen, and deletes the old one from storage to avoid orphans.
     // Create mode always uploads an image (required) and creates a new row.
     const submit = async (data) => {
-        if (post) {
-            const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
+        setSubmitError(null)
+        try {
+            if (post) {
+                const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null
 
-            if(file)
-                appwriteService.deleteFile(post.featuredImage)
+                if(file)
+                    appwriteService.deleteFile(post.featuredImage)
 
-            const dbPost = await appwriteService.updatePost(
-                post.$id, {
-                    ...data,
-                    featuredImage: file ? file.$id : undefined
-                }
-            )
+                const dbPost = await appwriteService.updatePost(
+                    post.$id, {
+                        ...data,
+                        featuredImage: file ? file.$id : undefined
+                    }
+                )
 
-            if(dbPost)
-                navigate(`/post/${dbPost.$id}`)
-        } else {
-            const file = await appwriteService.uploadFile(data.image[0])
-
-            if(file){
-                const fileId = file.$id
-                data.featuredImage = fileId
-                const dbPost = await appwriteService.createPost({
-                    ...data,
-                    userId: userData.$id,
-                    userName: userData.name
-                })
                 if(dbPost)
-                navigate(`/post/${dbPost.$id}`)
+                    navigate(`/post/${dbPost.$id}`)
+                else
+                    setSubmitError('Something went wrong updating this post. Please try again.')
+            } else {
+                const file = await appwriteService.uploadFile(data.image[0])
+
+                if(file){
+                    const fileId = file.$id
+                    data.featuredImage = fileId
+                    const dbPost = await appwriteService.createPost({
+                        ...data,
+                        userId: userData.$id,
+                        userName: userData.name
+                    })
+                    if(dbPost)
+                    navigate(`/post/${dbPost.$id}`)
+                    else
+                        setSubmitError('Something went wrong publishing this post. Please try again.')
+                } else {
+                    setSubmitError('Something went wrong uploading the featured image. Please try again.')
+                }
+        }
+        } catch (error) {
+            // createPost re-throws only on a 409 (rowId/slug already taken) —
+            // every other failure path above already returns falsy instead.
+            if (error?.code === 409) {
+                setSubmitError('A post with this title/slug already exists. Try a different title or edit the slug field directly.')
+            } else {
+                setSubmitError('Something went wrong. Please try again.')
             }
-    }
+        }
 }
 
     // Turns a title into a URL-safe slug: lowercase, non-alphanumeric chars
@@ -187,15 +206,22 @@ return (
                             <p className="text-xs text-red-600 font-medium">{errors.status.message}</p>
                         )}
 
-                        <Button 
+                        {submitError && (
+                            <p className="text-xs text-red-600 font-medium">{submitError}</p>
+                        )}
+
+                        <Button
                             type='submit'
-                            className={`w-full py-3 px-4 font-semibold text-white rounded-xl shadow-md transform active:scale-95 transition-all duration-200 ${
-                                post 
-                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-200' 
+                            disabled={isSubmitting}
+                            className={`w-full py-3 px-4 font-semibold text-white rounded-xl shadow-md transform active:scale-95 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100 ${
+                                post
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-200'
                                 : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-blue-200'
                             }`}
                         >
-                            {post ? 'Update Changes' : 'Publish Post'}
+                            {isSubmitting
+                                ? (post ? 'Updating...' : 'Publishing...')
+                                : (post ? 'Update Changes' : 'Publish Post')}
                         </Button>
                     </div>
                 </div>
