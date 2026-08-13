@@ -12,6 +12,8 @@ import Footer from "./footer/Footer";
 import RTE from "./RTE";
 import Login from './Login'
 import SignUp from './SignUp'
+import ForgotPassword from './ForgotPassword'
+import ResetPassword from './ResetPassword'
 
 export {
     Header,
@@ -27,5 +29,7 @@ export {
     Footer,
     RTE,
     Login,
-    SignUp
+    SignUp,
+    ForgotPassword,
+    ResetPassword
 }
