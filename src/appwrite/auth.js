@@ -63,6 +63,34 @@ export class AuthService{
             console.log("Appwrite service :: logout() :: ", error);
         }
     }
+
+    // Sends a recovery email with a link back to `${origin}/reset-password`.
+    // Appwrite appends userId and secret as query params to that URL — the
+    // secret is valid for 1 hour and is what resetPassword() below consumes.
+    async forgotPassword(email){
+        try {
+            return await this.account.createRecovery({
+                email: email,
+                url: `${window.location.origin}/reset-password`
+            })
+        } catch (error) {
+            throw error
+        }
+    }
+
+    // Completes the recovery flow: userId/secret come from the reset-password
+    // page's URL query params (see forgotPassword above).
+    async resetPassword({userId, secret, password}){
+        try {
+            return await this.account.updateRecovery({
+                userId: userId,
+                secret: secret,
+                password: password
+            })
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 const authService = new AuthService();

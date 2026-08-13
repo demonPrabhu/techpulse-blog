@@ -12,6 +12,8 @@ import EditPost from './pages/EditPost.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import SignUp from './pages/SignUp.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'
 import store from './store/store.js'
 import Post from './pages/Post.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -31,6 +33,16 @@ const router = createBrowserRouter(
       <Route path='/signup' element={
         <Protected authentication={false}>
           <SignUp />
+        </Protected>
+      } />
+      <Route path='/forgot-password' element={
+        <Protected authentication={false}>
+          <ForgotPassword />
+        </Protected>
+      } />
+      <Route path='/reset-password' element={
+        <Protected authentication={false}>
+          <ResetPassword />
         </Protected>
       } />
       <Route path='/add-post' element={
