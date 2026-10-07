@@ -3,11 +3,25 @@ import { Link, NavLink } from 'react-router'
 import { useSelector } from 'react-redux'
 import { Logo, Container, LogoutBtn } from '../index'
 
+// First letter of the first word + first letter of the last word (e.g.
+// "Prabhat Bhatia" -> "PB"); falls back to just the first letter for a
+// single-word name, and '' if there's no name at all.
+const getInitials = (name) => {
+    if (!name) return ''
+    const words = name.trim().split(/\s+/)
+    const first = words[0]?.[0] || ''
+    const last = words.length > 1 ? words[words.length - 1]?.[0] || '' : ''
+    return (first + last).toUpperCase()
+}
+
 /** Site nav bar; shows Login/Sign Up when logged out or Add Post/My Posts + Logout when logged in. */
 export default function Header() {
 
     const authStatus = useSelector((state) => state.auth.status)
+    const userData = useSelector((state) => state.auth.userData)
     const [menuOpen, setMenuOpen] = useState(false)
+
+    const initials = getInitials(userData?.name)
 
     // Each item's `active` flag decides whether it's shown for the current auth state.
     const items = [
@@ -74,7 +88,13 @@ export default function Header() {
                         )}
 
                         {authStatus && (
-                            <li className="ml-1">
+                            <li className="ml-1 flex items-center gap-2">
+                                <span
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-600 text-sm font-bold text-white"
+                                    aria-hidden="true"
+                                >
+                                    {initials}
+                                </span>
                                 <LogoutBtn />
                             </li>
                         )}
@@ -100,7 +120,13 @@ export default function Header() {
                         )}
 
                         {authStatus && (
-                            <li>
+                            <li className="flex items-center gap-2 px-4 py-2">
+                                <span
+                                    className="flex h-9 w-9 items-center justify-center rounded-full bg-sky-600 text-sm font-bold text-white"
+                                    aria-hidden="true"
+                                >
+                                    {initials}
+                                </span>
                                 <LogoutBtn />
                             </li>
                         )}
