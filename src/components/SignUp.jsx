@@ -6,6 +6,9 @@ import authService from '../appwrite/auth'
 import { login as storeLogin } from '../features/authSlice.js'
 import { Logo, Input, Button } from './index';
 
+
+
+
 export default function SignUp() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -33,23 +36,24 @@ export default function SignUp() {
     }
 
     return (
-        <div className="w-full space-y-6 bg-white">
+        <div className="w-full space-y-8 bg-slate-950 text-slate-100">
 
-            {/* Header Section */}
-            <div className="flex flex-col items-start text-left">
-                
-                {/* 🚀 THE FIXED LOGO CONTAINER BLOCK */}
-                {/* Added 'mix-blend-multiply' to filter out the solid white box background natively */}
-                <div className="mb-2 mix-blend-multiply overflow-hidden rounded-md">
-                    <Logo width="60px" />
-                </div>
-                
-                <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
-                    Sign up to create new account
+            {/* Header Stack with Logo centered in the middle */}
+            <div className="flex flex-col items-center text-center">
+                {/* 🚀 FIXED: Added Link wrapper targeting the root homepage route */}
+                <Link 
+                    to="/" 
+                    className="mb-4 mix-blend-screen overflow-hidden flex justify-center hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-md"
+                    aria-label="Navigate to home page"
+                >
+                    <Logo width="75px" />
+                </Link>
+                <h2 className="text-2xl font-bold tracking-tight text-slate-100">
+                    Create your account
                 </h2>
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="mt-1.5 text-sm text-slate-400">
                     Already have an account?{' '}
-                    <Link to='/login' className="font-semibold text-blue-600 hover:text-blue-500 transition-colors">
+                    <Link to='/login' className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">
                         Sign in
                     </Link>
                 </p>
@@ -57,23 +61,23 @@ export default function SignUp() {
 
             {/* Global Error Banner */}
             {error && (
-                <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg" role="alert">
-                    <span className="font-medium">Error:</span> {error}
+                <div className="p-4 text-sm text-red-400 bg-red-950/40 border border-red-900/50 rounded-lg" role="alert">
+                    <span className="font-semibold">Error:</span> {error}
                 </div>
             )}
 
-            {/* Form Section */}
+            {/* Form Fields & Submission Actions Logic */}
             <form onSubmit={handleSubmit(createAccount)} className="space-y-5">
                 <div className="space-y-4">
                     <div>
                         <Input
                             label='Full Name'
                             placeholder='Enter your name'
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            className="w-full px-4 py-2.5 border border-slate-800 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all bg-slate-900 text-slate-100 placeholder-slate-500 text-sm"
                             {...register('name', { required: 'Full name is required' })}
                         />
                         {errors.name && (
-                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.name.message}</p>
+                            <p className="mt-1 text-xs text-red-400 font-medium">{errors.name.message}</p>
                         )}
                     </div>
 
@@ -82,7 +86,7 @@ export default function SignUp() {
                             label='Email Address'
                             placeholder='Enter your email'
                             type='email'
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            className="w-full px-4 py-2.5 border border-slate-800 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all bg-slate-900 text-slate-100 placeholder-slate-500 text-sm"
                             {...register("email", {
                                 required: "Email is required",
                                 validate: {
@@ -92,7 +96,7 @@ export default function SignUp() {
                             })}
                         />
                         {errors.email && (
-                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.email.message}</p>
+                            <p className="mt-1 text-xs text-red-400 font-medium">{errors.email.message}</p>
                         )}
                     </div>
 
@@ -101,14 +105,14 @@ export default function SignUp() {
                             label='Password'
                             placeholder='Enter your password'
                             type='password'
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+                            className="w-full px-4 py-2.5 border border-slate-800 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all bg-slate-900 text-slate-100 placeholder-slate-500 text-sm"
                             {...register("password", {
                                 required: "Password is required",
                                 minLength: { value: 8, message: "Password must be at least 8 characters" }
                             })}
                         />
                         {errors.password && (
-                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.password.message}</p>
+                            <p className="mt-1 text-xs text-red-400 font-medium">{errors.password.message}</p>
                         )}
                     </div>
                 </div>
@@ -117,7 +121,7 @@ export default function SignUp() {
                     <Button
                         type='submit'
                         disabled={submitting}
-                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-950 focus:ring-cyan-400 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {submitting ? 'Creating account...' : 'Create Account'}
                     </Button>
@@ -127,6 +131,138 @@ export default function SignUp() {
         </div>
     )
 }
+
+
+
+// import React, { useState } from 'react'
+// import { useForm } from 'react-hook-form'
+// import { Link, useNavigate } from 'react-router-dom'
+// import { useDispatch } from 'react-redux'
+// import authService from '../appwrite/auth'
+// import { login as storeLogin } from '../features/authSlice.js'
+// import { Logo, Input, Button } from './index';
+
+// export default function SignUp() {
+//     const navigate = useNavigate()
+//     const dispatch = useDispatch()
+//     const { register, handleSubmit, formState: { errors } } = useForm()
+//     const [error, setError] = useState()
+//     const [submitting, setSubmitting] = useState(false)
+
+//     const createAccount = async (data) => {
+//         try {
+//             setError('')
+//             setSubmitting(true)
+//             const session = await authService.createAccount(data)
+//             if (session) {
+//                 const userData = await authService.getCurrentUser()
+//                 if (userData) {
+//                     dispatch(storeLogin({ userData }))
+//                     navigate('/')
+//                 }
+//             }
+//         } catch (error) {
+//             setError(error.message)
+//         } finally {
+//             setSubmitting(false)
+//         }
+//     }
+
+//     return (
+//         <div className="w-full space-y-6 bg-white">
+
+//             {/* Header Section */}
+//             <div className="flex flex-col items-start text-left">
+                
+//                 {/* 🚀 THE FIXED LOGO CONTAINER BLOCK */}
+//                 {/* Added 'mix-blend-multiply' to filter out the solid white box background natively */}
+//                 <div className="mb-2 mix-blend-multiply overflow-hidden rounded-md">
+//                     <Logo width="60px" />
+//                 </div>
+                
+//                 <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">
+//                     Sign up to create new account
+//                 </h2>
+//                 <p className="mt-2 text-sm text-gray-600">
+//                     Already have an account?{' '}
+//                     <Link to='/login' className="font-semibold text-blue-600 hover:text-blue-500 transition-colors">
+//                         Sign in
+//                     </Link>
+//                 </p>
+//             </div>
+
+//             {/* Global Error Banner */}
+//             {error && (
+//                 <div className="p-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg" role="alert">
+//                     <span className="font-medium">Error:</span> {error}
+//                 </div>
+//             )}
+
+//             {/* Form Section */}
+//             <form onSubmit={handleSubmit(createAccount)} className="space-y-5">
+//                 <div className="space-y-4">
+//                     <div>
+//                         <Input
+//                             label='Full Name'
+//                             placeholder='Enter your name'
+//                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+//                             {...register('name', { required: 'Full name is required' })}
+//                         />
+//                         {errors.name && (
+//                             <p className="mt-1 text-xs text-red-600 font-medium">{errors.name.message}</p>
+//                         )}
+//                     </div>
+
+//                     <div>
+//                         <Input
+//                             label='Email Address'
+//                             placeholder='Enter your email'
+//                             type='email'
+//                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+//                             {...register("email", {
+//                                 required: "Email is required",
+//                                 validate: {
+//                                     matchPattern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+//                                         "Email address must be a valid address",
+//                                 }
+//                             })}
+//                         />
+//                         {errors.email && (
+//                             <p className="mt-1 text-xs text-red-600 font-medium">{errors.email.message}</p>
+//                         )}
+//                     </div>
+
+//                     <div>
+//                         <Input
+//                             label='Password'
+//                             placeholder='Enter your password'
+//                             type='password'
+//                             className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
+//                             {...register("password", {
+//                                 required: "Password is required",
+//                                 minLength: { value: 8, message: "Password must be at least 8 characters" }
+//                             })}
+//                         />
+//                         {errors.password && (
+//                             <p className="mt-1 text-xs text-red-600 font-medium">{errors.password.message}</p>
+//                         )}
+//                     </div>
+//                 </div>
+
+//                 <div className="pt-2">
+//                     <Button
+//                         type='submit'
+//                         disabled={submitting}
+//                         className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+//                     >
+//                         {submitting ? 'Creating account...' : 'Create Account'}
+//                     </Button>
+//                 </div>
+//             </form>
+
+//         </div>
+//     )
+// }
 
 
 // import React, { useState } from 'react'

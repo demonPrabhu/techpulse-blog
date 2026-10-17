@@ -39,9 +39,9 @@ function MyPosts() {
 
     if (loading) {
         return (
-            <div className="min-h-[60vh] flex items-center justify-center bg-slate-50">
-                <div className="flex items-center gap-3 rounded-full border border-sky-200 bg-sky-50 px-5 py-3 text-sky-700 shadow-sm">
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-sky-600 border-t-transparent"></span>
+            <div className="flex min-h-[60vh] items-center justify-center px-4">
+                <div className="flex items-center gap-3 rounded-full border border-blue-500/20 bg-slate-900/60 px-5 py-3 text-blue-400 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></span>
                     <span className="font-medium">Loading your posts...</span>
                 </div>
             </div>
@@ -50,24 +50,24 @@ function MyPosts() {
 
     if (error) {
         return (
-            <div className="min-h-[60vh] flex items-center justify-center bg-slate-50 px-4">
-                <div className="max-w-md rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
-                    <p className="text-lg font-semibold text-red-700">Something went wrong</p>
-                    <p className="mt-2 text-red-600">{error}</p>
+            <div className="flex min-h-[60vh] items-center justify-center px-4">
+                <div className="max-w-md rounded-2xl border border-red-500/30 bg-red-950/30 p-6 text-center shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+                    <p className="text-lg font-semibold text-red-300">Something went wrong</p>
+                    <p className="mt-2 text-red-400">{error}</p>
                 </div>
             </div>
         )
     }
 
   return (
-    <div className="bg-slate-50 py-10">
+    <div className="py-10">
       <Container>
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">My Posts</h1>
+          <h1 className="text-3xl font-bold text-white">My Posts</h1>
         </div>
 
         {posts.length === 0 ? (
-          <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-slate-600">
+          <div className="flex min-h-[40vh] items-center justify-center rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 text-slate-300 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
             You haven't written any posts yet.
           </div>
         ) : (

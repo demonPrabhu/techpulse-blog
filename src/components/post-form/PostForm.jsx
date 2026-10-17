@@ -115,21 +115,18 @@ export default function PostForm({post}) {
     },[watch, setValue, slugTransform] )
 
 return (
-        // Added a crisp card wrapper container with background depth
-        <div className="w-full p-6 md:p-8 bg-white border border-gray-100 rounded-2xl shadow-sm">
+        <div className="w-full rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl md:p-8">
             <form onSubmit={handleSubmit(submit)} className="flex flex-wrap -mx-4">
-                
-                {/* Left Side: Dynamic Core inputs (Title, Slug, Text Area Editor) */}
                 <div className="w-full lg:w-2/3 px-4 flex flex-col gap-5">
                     <div>
                         <Input
                             label='Title'
                             placeholder='Enter a catchy title...'
                             {...register('title', {required: 'Title is required'}) }
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                            className="focus:border-transparent focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.title && (
-                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.title.message}</p>
+                            <p className="mt-1 text-xs text-red-400 font-medium">{errors.title.message}</p>
                         )}
                     </div>
 
@@ -139,22 +136,19 @@ return (
                             placeholder='url-slug-auto-generated'
                             {...register('slug', {required: 'Slug is required'})}
                             onInput={(e) => setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                            className="focus:border-transparent focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.slug && (
-                            <p className="mt-1 text-xs text-red-600 font-medium">{errors.slug.message}</p>
+                            <p className="mt-1 text-xs text-red-400 font-medium">{errors.slug.message}</p>
                         )}
                     </div>
                     
-                    {/* TinyMCE wrapper card to separate text editor visually */}
-                    <div className="rounded-xl border border-gray-100 p-1 bg-gray-50/50">
+                    <div className="rounded-xl border border-slate-800/80 bg-slate-950/40 p-1">
                         <RTE
                           label='Content'
                           name='content'
                           control={control}
                           defaultValue={getValues('content')}
-                          // TinyMCE's "empty" value is HTML like "<p></p>", not "",
-                          // so a plain `required` rule wouldn't catch a blank post.
                           rules={{
                             validate: (value) =>
                               (value && value.replace(/<[^>]*>/g, '').trim().length > 0) ||
@@ -164,59 +158,53 @@ return (
                     </div>
                 </div>
 
-                {/* Right Side: Media Control & Actions bar */}
                 <div className="w-full lg:w-1/3 px-4 mt-6 lg:mt-0 flex flex-col gap-6">
-                    
-                    {/* Media Upload Box wrapper */}
-                    <div className="p-5 border border-gray-200 border-dashed rounded-2xl bg-gray-50/50 flex flex-col gap-4">
-                        {/* Only required when creating: an edit keeps the existing image if none is chosen. */}
+                    <div className="flex flex-col gap-4 rounded-2xl border border-dashed border-slate-700 bg-slate-950/40 p-5">
                         <Input
                             label='Featured Image'
                             type='file'
                             accept='image/png, image/jpg, image/jpeg, image/gif'
                             {...register('image', { required: post ? false : 'Featured image is required' })}
-                            className="file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 text-gray-500 cursor-pointer w-full"
+                            className="w-full cursor-pointer text-slate-300 file:mr-4 file:rounded-xl file:border-0 file:bg-blue-500/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-400 hover:file:bg-blue-500/20"
                         />
                         {errors.image && (
-                            <p className="text-xs text-red-600 font-medium">{errors.image.message}</p>
+                            <p className="text-xs text-red-400 font-medium">{errors.image.message}</p>
                         )}
 
-                        {/* Interactive Image Frame with overlay accents */}
                         {post && (
-                            <div className="w-full overflow-hidden border border-gray-200 rounded-xl group relative shadow-inner">
+                            <div className="group relative w-full overflow-hidden rounded-xl border border-slate-700">
                                 <img 
                                     src={appwriteService.getFilePreview(post.featuredImage)} 
                                     alt={post.title}
-                                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                    className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300 pointer-events-none" />
+                                <div className="pointer-events-none absolute inset-0 bg-black/10 transition-colors duration-300 group-hover:bg-black/0" />
                             </div>
                         )}
                     </div>
 
-                    {/* Status & Options Wrapper */}
-                    <div className="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 rounded-2xl border border-slate-800/80 bg-slate-950/40 p-5">
                         <Select
                             label='Post Visibility Status'
                             options={['active', 'inactive']}
                             {...register('status', {required: 'Status is required'})}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all outline-none"
+                            className="w-full rounded-xl border border-slate-700/50 bg-slate-950/60 px-4 py-2.5 text-white focus:border-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         {errors.status && (
-                            <p className="text-xs text-red-600 font-medium">{errors.status.message}</p>
+                            <p className="text-xs text-red-400 font-medium">{errors.status.message}</p>
                         )}
 
                         {submitError && (
-                            <p className="text-xs text-red-600 font-medium">{submitError}</p>
+                            <p className="text-xs text-red-400 font-medium">{submitError}</p>
                         )}
 
                         <Button
                             type='submit'
                             disabled={isSubmitting}
-                            className={`w-full py-3 px-4 font-semibold text-white rounded-xl shadow-md transform active:scale-95 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100 ${
+                            className={`w-full rounded-xl py-3 px-4 font-semibold shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed ${
                                 post
-                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-emerald-200'
-                                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-blue-200'
+                                ? 'bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/15'
+                                : 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/15'
                             }`}
                         >
                             {isSubmitting

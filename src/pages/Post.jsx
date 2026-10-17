@@ -79,9 +79,9 @@ function Post() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-slate-50">
-        <div className="flex items-center gap-3 rounded-full border border-sky-200 bg-sky-50 px-5 py-3 text-sky-700 shadow-sm">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-sky-600 border-t-transparent"></span>
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="flex items-center gap-3 rounded-full border border-blue-500/20 bg-slate-900/60 px-5 py-3 text-blue-400 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></span>
           <span className="font-medium">Loading post...</span>
         </div>
       </div>
@@ -90,15 +90,15 @@ function Post() {
 
   if (notFound || !post) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-slate-50 px-4">
-        <div className="max-w-lg rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
-          <h1 className="text-2xl font-bold text-slate-900">Post not found</h1>
-          <p className="mt-3 text-slate-600">
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="max-w-lg rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-8 text-center shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+          <h1 className="text-2xl font-bold text-white">Post not found</h1>
+          <p className="mt-3 text-slate-400">
             The post you're looking for doesn't exist or was removed.
           </p>
           <Link
             to="/my-posts"
-            className="mt-5 inline-flex items-center gap-1 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-sky-700"
+            className="mt-5 inline-flex items-center gap-1 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white shadow-lg shadow-blue-600/15 transition hover:bg-blue-700"
           >
             ← Back to my posts
           </Link>
@@ -108,9 +108,9 @@ function Post() {
   }
 
   return (
-    <div className="bg-slate-50 py-10">
+    <div className="py-10">
       <Container>
-        <article className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <article className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
           <div className="relative">
             {imageUrl ? (
               <img
@@ -137,8 +137,8 @@ function Post() {
                     </Button>
                     <Button
                       onClick={() => setConfirmingDelete(false)}
-                      bgColor="bg-white"
-                      textColor="text-slate-700"
+                      bgColor="bg-slate-800"
+                      textColor="text-slate-200"
                       className="shadow-md disabled:opacity-60"
                       disabled={deleting}
                     >
@@ -168,11 +168,11 @@ function Post() {
           </div>
 
           <div className="p-6 sm:p-8">
-            <span className="mb-3 inline-flex w-fit rounded-full bg-sky-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-sky-700">
+            <span className="mb-3 inline-flex w-fit rounded px-2.5 py-1 text-[10px] font-mono font-bold uppercase tracking-widest text-blue-400 border border-blue-500/20 bg-blue-500/5">
               Blog Post
             </span>
-            <h1 className="text-3xl font-bold leading-tight text-slate-900">{post.title}</h1>
-            <p className="mt-1 text-sm text-slate-500">By {post.userName || 'Anonymous'}</p>
+            <h1 className="text-3xl font-bold leading-tight text-white">{post.title}</h1>
+            <p className="mt-1 text-sm text-slate-400">By {post.userName || 'Anonymous'}</p>
 
             <div className="post-content mt-6">
               {parse(post.content)}

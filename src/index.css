@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .post-content {
-  color: theme('colors.slate.700');
+  color: theme('colors.slate.300');
   line-height: 1.75;
 }
 
@@ -13,12 +13,12 @@
 .post-content h2,
 .post-content h3 {
   font-weight: 700;
-  color: theme('colors.slate.900');
+  color: theme('colors.white');
   margin-top: 1.5em;
 }
 
 .post-content a {
-  color: theme('colors.sky.600');
+  color: theme('colors.blue.400');
   text-decoration: underline;
 }
 
@@ -41,8 +41,8 @@
 }
 
 .post-content blockquote {
-  border-left: 4px solid theme('colors.sky.200');
+  border-left: 4px solid theme('colors.blue.500');
   padding-left: 1em;
-  color: theme('colors.slate.500');
+  color: theme('colors.slate.400');
   font-style: italic;
 }

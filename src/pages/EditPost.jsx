@@ -47,9 +47,9 @@ function EditPost() {
 
   if (loading) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-slate-50">
-        <div className="flex items-center gap-3 rounded-full border border-sky-200 bg-sky-50 px-5 py-3 text-sky-700 shadow-sm">
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-sky-600 border-t-transparent"></span>
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="flex items-center gap-3 rounded-full border border-blue-500/20 bg-slate-900/60 px-5 py-3 text-blue-400 shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></span>
           <span className="font-medium">Loading post...</span>
         </div>
       </div>
@@ -58,15 +58,15 @@ function EditPost() {
 
   if (notFound || !post || !isAuthor) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-slate-50 px-4">
-        <div className="max-w-lg rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center shadow-sm">
-          <h1 className="text-2xl font-bold text-slate-900">Post not found</h1>
-          <p className="mt-3 text-slate-600">
+      <div className="flex min-h-[60vh] items-center justify-center px-4">
+        <div className="max-w-lg rounded-2xl border border-dashed border-slate-700 bg-slate-900/60 p-8 text-center shadow-[0_20px_50px_rgba(37,99,235,0.15)] backdrop-blur-xl">
+          <h1 className="text-2xl font-bold text-white">Post not found</h1>
+          <p className="mt-3 text-slate-400">
             The post you're looking for doesn't exist or you don't have permission to edit it.
           </p>
           <Link
             to="/my-posts"
-            className="mt-5 inline-flex items-center gap-1 rounded-lg bg-sky-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-sky-700"
+            className="mt-5 inline-flex items-center gap-1 rounded-lg bg-blue-600 px-4 py-2 font-medium text-white shadow-lg shadow-blue-600/15 transition hover:bg-blue-700"
           >
             ← Back to my posts
           </Link>
@@ -76,7 +76,7 @@ function EditPost() {
   }
 
   return (
-    <div className="bg-slate-50 py-10">
+    <div className="py-10">
       <Container>
         <PostForm post={post} />
       </Container>
